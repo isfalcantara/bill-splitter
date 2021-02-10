@@ -40,7 +40,7 @@ defmodule BillSplitter do
     |> Enum.into(%{})
   end
 
-  defp sum_total(%{}), do: 0
+  defp sum_total([]), do: 0
 
   defp sum_total(bill) do
     Enum.reduce(bill, 0, fn line_item, sum ->
