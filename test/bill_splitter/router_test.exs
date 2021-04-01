@@ -21,8 +21,21 @@ defmodule BillSplitter.RouterTest do
       assert conn.status == 200
     end
 
-    test "returns a message string", %{conn: conn} do
-      assert is_binary(conn.resp_body)
+    test "returns valid JSON", %{conn: conn} do
+      {status, _data} = Jason.decode(conn.resp_body)
+      assert status == :ok
+    end
+
+    test "returns the result encoded as JSON", %{conn: conn} do
+      {_status, response_data} = Jason.decode(conn.resp_body)
+
+      assert(
+        response_data == %{
+          "email1" => 40,
+          "email2" => 39,
+          "email3" => 39
+        }
+      )
     end
   end
 
@@ -37,8 +50,16 @@ defmodule BillSplitter.RouterTest do
       assert conn.status == 404
     end
 
-    test "returns an error message string", %{conn: conn} do
-      assert is_binary(conn.resp_body)
+    test "returns valid JSON", %{conn: conn} do
+      {status, _response_data} = Jason.decode(conn.resp_body)
+
+      assert status == :ok
+    end
+
+    test "returns a JSON error message", %{conn: conn} do
+      {_status, response_data} = Jason.decode(conn.resp_body)
+
+      assert response_data == %{"error" => "Not Found"}
     end
   end
 end
