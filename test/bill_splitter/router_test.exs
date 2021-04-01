@@ -6,10 +6,14 @@ defmodule BillSplitter.RouterTest do
 
   doctest BillSplitter.Router
 
-  describe "GET /" do
+  describe "GET /:bill/:emails" do
     setup do
       %{
-        conn: BillSplitter.Router.call(conn(:get, "/"), @opts)
+        conn:
+          BillSplitter.Router.call(
+            conn(:get, "/maca_12_5_banana_2_4_pera_5_10/email1_email2_email3"),
+            @opts
+          )
       }
     end
 
